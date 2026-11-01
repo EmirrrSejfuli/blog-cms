@@ -38,6 +38,7 @@ import { listTags } from "@/modules/tags/api";
 import type { PostSortKey, PostStatus, PostSummary } from "@/types/post";
 import { archivePost, countPostsByStatus, deletePost, duplicatePost, listPosts, publishPost, unpublishPost } from "./api";
 import { buildPostListParams, reconcilePostListPage } from "./list-page-reconciliation";
+import { uniqueIdealForEntries } from "./idealFor";
 
 type StatusTab = PostStatus | "ALL";
 
@@ -208,8 +209,8 @@ export function PostsListCanvas() {
             {post.idealFor.trim() && (
               <div className="mt-1 flex flex-wrap items-center gap-1">
                 <span className="text-[10px] text-muted">Ideal for:</span>
-                {post.idealFor.split(",").map((role) => role.trim()).filter(Boolean).slice(0, 3).map((role) => (
-                  <StatusChip key={role} tone="neutral" className="!normal-case !tracking-normal">{role}</StatusChip>
+                {uniqueIdealForEntries(post.idealFor).slice(0, 3).map((role) => (
+                  <StatusChip key={role.toLocaleLowerCase("en-US")} tone="neutral" className="!normal-case !tracking-normal">{role}</StatusChip>
                 ))}
               </div>
             )}

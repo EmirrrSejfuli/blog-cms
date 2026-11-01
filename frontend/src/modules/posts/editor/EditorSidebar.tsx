@@ -49,7 +49,6 @@ export function EditorSidebar({ form, errors, meta, wordCount, readingTime, onCh
       <UrlPanel form={form} errors={errors} status={meta.status} onChange={onChange} onSlugEdited={onSlugEdited} />
       <CoverPanel form={form} onChange={onChange} />
       <PeoplePanel form={form} onChange={onChange} />
-      <AudiencePanel form={form} errors={errors} onChange={onChange} />
       <SeoPanel form={form} errors={errors} onChange={onChange} />
       <Panel title="Options">
         <Switch
@@ -64,14 +63,14 @@ export function EditorSidebar({ form, errors, meta, wordCount, readingTime, onCh
   );
 }
 
-// ── Summary ─────────────────────────────────────────────────────────────
+// â”€â”€ Summary â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function SummaryPanel({ meta, wordCount, readingTime }: { meta: EditorMeta; wordCount: number; readingTime: number }) {
   const rows: [string, React.ReactNode][] = [
     ["Status", <PostStatusChip key="status" status={meta.status} />],
     ["Published", meta.publishedAt ? formatDateTime(meta.publishedAt) : "Never"],
     ["Last saved", meta.updatedAt ? formatDateTime(meta.updatedAt) : "Not saved yet"],
-    ["Length", `${pluralize(wordCount, "word")} · ${readingTime} min read`],
+    ["Length", `${pluralize(wordCount, "word")} Â· ${readingTime} min read`],
   ];
   return (
     <Panel title="Summary">
@@ -87,7 +86,7 @@ function SummaryPanel({ meta, wordCount, readingTime }: { meta: EditorMeta; word
   );
 }
 
-// ── URL & excerpt ───────────────────────────────────────────────────────
+// â”€â”€ URL & excerpt â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function UrlPanel({
   form,
@@ -159,6 +158,23 @@ function UrlPanel({
           className="input"
         />
       </Field>
+    </Panel>
+  );
+}
+
+// â”€â”€ Audience â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+function AudiencePanel({
+  form,
+  errors,
+  onChange,
+}: {
+  form: EditorForm;
+  errors: FormErrors;
+  onChange: (patch: Partial<EditorForm>) => void;
+}) {
+  return (
+    <Panel title="Audience">
       <Field
         label="Ideal for"
         htmlFor="ideal-for"
@@ -170,6 +186,7 @@ function UrlPanel({
           id="ideal-for"
           className="input"
           value={form.idealFor}
+          maxLength={POST_LIMITS.idealFor}
           onChange={(e) => onChange({ idealFor: e.target.value })}
           placeholder="CIO, Head of IT"
           aria-invalid={Boolean(errors.idealFor)}
@@ -179,7 +196,7 @@ function UrlPanel({
   );
 }
 
-// ── Cover image ─────────────────────────────────────────────────────────
+// â”€â”€ Cover image â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function CoverPanel({ form, onChange }: { form: EditorForm; onChange: (patch: Partial<EditorForm>) => void }) {
   const [picking, setPicking] = useState(false);
@@ -210,7 +227,7 @@ function CoverPanel({ form, onChange }: { form: EditorForm; onChange: (patch: Pa
         >
           <ImagePlus size={18} aria-hidden />
           <span className="text-[12px] font-semibold">Add a cover image</span>
-          <span className="text-[11px]">1200 × 630 works best for social sharing</span>
+          <span className="text-[11px]">1200 Ã— 630 works best for social sharing</span>
         </button>
       )}
 
@@ -237,7 +254,7 @@ function CoverPanel({ form, onChange }: { form: EditorForm; onChange: (patch: Pa
   );
 }
 
-// ── Authors & tags ──────────────────────────────────────────────────────
+// â”€â”€ Authors & tags â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function PeoplePanel({ form, onChange }: { form: EditorForm; onChange: (patch: Partial<EditorForm>) => void }) {
   const toast = useToast();
@@ -251,7 +268,7 @@ function PeoplePanel({ form, onChange }: { form: EditorForm; onChange: (patch: P
       <Field label="Authors" htmlFor="authors">
         <MultiSelect
           id="authors"
-          placeholder="Add authors…"
+          placeholder="Add authorsâ€¦"
           options={(authors.data ?? []).map((a) => ({ id: a.id, label: a.name }))}
           value={form.authorIds}
           onChange={(authorIds) => onChange({ authorIds })}
@@ -260,7 +277,7 @@ function PeoplePanel({ form, onChange }: { form: EditorForm; onChange: (patch: P
             try {
               const author = await createAuthor({ name, slug: slugify(name), bio: "", avatarId: null });
               authors.reload();
-              toast.success(`Added author “${author.name}”.`);
+              toast.success(`Added author â€œ${author.name}â€.`);
               return { id: author.id, label: author.name };
             } catch (error) {
               toast.error((error as Error).message);
@@ -272,7 +289,7 @@ function PeoplePanel({ form, onChange }: { form: EditorForm; onChange: (patch: P
       <Field label="Tags" htmlFor="tags">
         <MultiSelect
           id="tags"
-          placeholder="Add tags…"
+          placeholder="Add tagsâ€¦"
           options={(tags.data ?? []).map((t) => ({ id: t.id, label: t.name }))}
           value={form.tagIds}
           onChange={(tagIds) => onChange({ tagIds })}
@@ -332,6 +349,7 @@ function AudiencePanel({ form, errors, onChange }: { form: EditorForm; errors: F
   );
 }
 
+
 function SeoPanel({ form, errors, onChange }: { form: EditorForm; errors: FormErrors; onChange: (patch: Partial<EditorForm>) => void }) {
   const title = form.seoTitle || form.title || "Untitled post";
   const description = form.metaDescription || form.excerpt || "Add an excerpt or meta description to control this text.";
@@ -341,7 +359,7 @@ function SeoPanel({ form, errors, onChange }: { form: EditorForm; errors: FormEr
     { ok: title.length > 0 && title.length <= POST_LIMITS.seoTitle, label: `Title is ${POST_LIMITS.seoTitle} characters or fewer` },
     {
       ok: (form.metaDescription || form.excerpt).length >= 50 && (form.metaDescription || form.excerpt).length <= POST_LIMITS.metaDescription,
-      label: `Description is 50–${POST_LIMITS.metaDescription} characters`,
+      label: `Description is 50â€“${POST_LIMITS.metaDescription} characters`,
     },
     ...(keyword
       ? [
@@ -355,7 +373,7 @@ function SeoPanel({ form, errors, onChange }: { form: EditorForm; errors: FormEr
     <Panel title="SEO" bodyClassName="flex flex-col gap-4">
       <div className="rounded-md border border-line bg-input p-3" aria-label="Search result preview">
         <div className="truncate text-[11.5px] text-secondary">
-          {PREVIEW_HOST} › blog › {form.slug || "post-url"}
+          {PREVIEW_HOST} â€º blog â€º {form.slug || "post-url"}
         </div>
         <div className="mt-0.5 line-clamp-1 text-[15px] leading-snug text-[var(--search-preview-link)]">{title}</div>
         <div className="mt-0.5 line-clamp-2 text-[12px] leading-snug text-secondary">{description}</div>
@@ -424,3 +442,4 @@ function SeoPanel({ form, errors, onChange }: { form: EditorForm; errors: FormEr
     </Panel>
   );
 }
+

@@ -225,6 +225,7 @@ class BlogApiTest extends IntegrationTest {
     @Test
     void listSearchesAcrossTitleExcerptSlugAndBodyText() throws Exception {
         Map<String, Object> postA = postBody("Rightsizing Pods", doc("Node memory capacity."));
+        postA.put("idealFor", "CISO");
         String idA = data(call(post("/api/v1/posts"), postA).andExpect(status().isCreated())).path("id").asText();
         publish(idA);
 
@@ -256,6 +257,12 @@ class BlogApiTest extends IntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.length()").value(1))
                 .andExpect(jsonPath("$.data[0].id").value(idB));
+
+        // Ideal-for labels participate in public search, case-insensitively.
+        mockMvc.perform(get("/api/v1/blogs?q=ciso"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.length()").value(1))
+                .andExpect(jsonPath("$.data[0].idealFor").value("CISO"));
 
         // Content text match
         mockMvc.perform(get("/api/v1/blogs?q=replication"))
