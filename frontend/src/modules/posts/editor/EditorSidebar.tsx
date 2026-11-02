@@ -49,6 +49,8 @@ export function EditorSidebar({ form, errors, meta, wordCount, readingTime, onCh
       <UrlPanel form={form} errors={errors} status={meta.status} onChange={onChange} onSlugEdited={onSlugEdited} />
       <CoverPanel form={form} onChange={onChange} />
       <PeoplePanel form={form} onChange={onChange} />
+      <IdealForPanel form={form} errors={errors} onChange={onChange} />
+      <AudiencePanel form={form} errors={errors} onChange={onChange} />
       <SeoPanel form={form} errors={errors} onChange={onChange} />
       <Panel title="Options">
         <Switch
@@ -164,7 +166,7 @@ function UrlPanel({
 
 // â”€â”€ Audience â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-function AudiencePanel({
+function IdealForPanel({
   form,
   errors,
   onChange,

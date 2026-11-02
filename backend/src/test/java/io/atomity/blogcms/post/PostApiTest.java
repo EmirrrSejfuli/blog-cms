@@ -407,15 +407,11 @@ class PostApiTest extends IntegrationTest {
 
         // Substring search covers the body text, case-insensitively.
         call(get("/api/v1/posts?q=GRID")).andExpect(jsonPath("$.data.length()").value(1))
-<<<<<<< HEAD
             .andExpect(jsonPath("$.data[0].title").value("Carbon footprint"));
-=======
-                .andExpect(jsonPath("$.data[0].title").value("Carbon footprint"));
         // Audience labels are searchable and matching is case-insensitive.
         call(get("/api/v1/posts?q=ciso")).andExpect(jsonPath("$.data.length()").value(1))
                 .andExpect(jsonPath("$.data[0].idealFor").value("CISO"));
         call(get("/api/v1/posts?q=CISO")).andExpect(jsonPath("$.data.length()").value(1));
->>>>>>> 90f8fd6 (feat(posts): add ideal for audience field)
         // % is matched literally, not as a wildcard.
         call(get("/api/v1/posts?q=%25")).andExpect(jsonPath("$.data.length()").value(0));
 
